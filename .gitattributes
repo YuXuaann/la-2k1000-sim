@@ -1,0 +1,4 @@
+qemu-system-loongarch64 filter=lfs diff=lfs merge=lfs -text
+u-boot-with-spl.bin filter=lfs diff=lfs merge=lfs -text
+nand.dat filter=lfs diff=lfs merge=lfs -text
+mkimage filter=lfs diff=lfs merge=lfs -text
