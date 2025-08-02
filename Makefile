@@ -7,6 +7,9 @@ ARCH_NAME := loongarch64
 TARGET := loongarch64-unknown-linux-gnu
 ROOT := $(shell pwd)/../..
 
+# for qemu
+export DEBUG_UNALIGN=1
+
 ERROR := "\e[31m"
 WARN := "\e[33m"
 NORMAL := "\e[32m"
@@ -17,7 +20,7 @@ TARGET_DIR := $(ROOT)/$(PROJECT)/target/$(TARGET)/$(MODE)
 TEST_DIR := $(ROOT)/$(PROJECT)-OS-Test
 KERNEL_ELF := $(TARGET_DIR)/$(KERNEL)
 KERNEL_BIN := $(KERNEL_ELF).bin
-KERNEL_UIMG := $(ROOT)/$(KERNEL).ui
+KERNEL_UIMG := $(ROOT)/$(KERNEL)-la-uimage
 FS_IMG := $(TEST_DIR)/$(TEST_TYPE)/tmp-img/fs-$(ARCH_NAME).fs.img
 IMG_DIR := $(ROOT)/NoAxiom-OS-Utils/easy-fs-fuse
 U_IMG := $(IMG_DIR)/uImage
