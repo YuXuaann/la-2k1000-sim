@@ -50,7 +50,7 @@ build:
 img:
 	@echo $(NORMAL)"[2k-1000 Test] Building filesystem image..."$(RESET)
 	@cp $(FS_IMG) $(IMG)
-	./buildfs.sh "$(IMG)" "laqemu" $(MODE)
+# ./buildfs.sh "$(IMG)" "laqemu" $(MODE)
 
 uimage:
 	@echo $(NORMAL)"[2k-1000 Test] Building uImage..."$(RESET)
@@ -58,9 +58,22 @@ uimage:
 	@if [ -f $(U_IMG) ]; then rm $(U_IMG); fi
 	@cp -f $(KERNEL_UIMG) $(U_IMG)
 
+ON_SCREEN ?= true
+LOG_PATH := ${shell pwd}/log
+LOG_FILE := ${LOG_PATH}/$(shell date +%m_%d-%H_%M).log
+RUN_OPTION :=
+ifeq ($(ON_SCREEN),true)
+RUN_OPTION += | tee $(LOG_FILE)
+else ifeq ($(ON_SCREEN),false)
+RUN_OPTION += > $(LOG_FILE)
+endif
+
 run:
 	@if [ -L $(QEMU_2k1000_DIR)/$(IMG_NAME) ]; then rm $(QEMU_2k1000_DIR)/$(IMG_NAME); fi
 	@ln -s $(IMG_LN) $(QEMU_2k1000_DIR)/$(IMG_NAME)
 	@echo "========WARNING!========"
 	@echo "The next command is expecting a modified runqemu2k1000 script where any potential and implicit \"current working directory\" has been replaced by a generated script storage path."
-	@./run_script ./runqemu2k1000
+	@mkdir -p ${LOG_PATH}
+	@echo "log is saved to ${LOG_FILE}"
+	@./run_script ./runqemu2k1000 ${RUN_OPTION}
+	@echo "log is saved to ${LOG_FILE}"
